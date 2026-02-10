@@ -13,7 +13,7 @@ const steps = [
     stepNumber: "1",
     image: step1Image,
     title: "WhatsApp or Chat",
-    description: "Click the WhatsApp button to chat with us and request a doctor visit."
+    description: "Click the button to book instantly via WhatsApp and request a doctor visit."
   },
   {
     id: 2,
@@ -60,8 +60,8 @@ const ProcessSection = () => {
 
         <div className="whatsapp-booking-wrapper">
           <button type="button" className="btn primary-btn" onClick={openChatbot}>
-            <img src={chatbotIcon} alt="Chat with us" className="btn-icon" />
-            Chat with us
+            <img src={chatbotIcon} alt="Book Instantly Via WhatsApp" className="btn-icon" />
+            Book Instantly Via WhatsApp
           </button>
         </div>
       </div>

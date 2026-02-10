@@ -50,8 +50,8 @@ export default function HomeHero() {
 
           <div className="hero-buttons">
             <button type="button" className="btn primary-btn" onClick={openChatbot}>
-              <img src={chatbotIcon} alt="Chat with us" className="btn-icon" />
-              Chat with us
+              <img src={chatbotIcon} alt="Book Instantly Via WhatsApp" className="btn-icon" />
+              Book Instantly Via WhatsApp
             </button>
           </div>
         </div>

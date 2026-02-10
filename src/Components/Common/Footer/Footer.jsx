@@ -28,7 +28,7 @@ export default function Footer() {
                     <h2 className="footer_heading">Contact Us</h2>
                     <div className="contact_details">
                         <p>Phone: +971 55 154 8684</p>
-                        <p><button type="button" className="footer-link-btn" onClick={openChatbot}>Chat with us</button></p>
+                        <p><button type="button" className="footer-link-btn" onClick={openChatbot}>Book Instantly Via WhatsApp</button></p>
                         <p>Email: <a href="mailto:support@citydoctor.ae">support@citydoctor.ae</a></p>
                     </div>
                 </div>

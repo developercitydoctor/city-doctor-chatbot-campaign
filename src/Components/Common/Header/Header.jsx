@@ -40,9 +40,9 @@ export default function Header(){
 
                 {location.pathname !== "/thank-you" && (
                     <div className="call-div-right">
-                        <button type="button" className="whatsapp-button" onClick={openChatbot} aria-label="Open chat">
+                        <button type="button" className="whatsapp-button" onClick={openChatbot} aria-label="WhatsApp">
                             <img src={chatbotIcon} alt="Chat" className="whatsapp-icon-btn" />
-                            <span className="whatsapp-number">Chat with us</span>
+                            <span className="whatsapp-number">WhatsApp</span>
                         </button>
                     </div>
                 )}
