@@ -45,7 +45,7 @@ export default function Chatbot() {
     const [chatData, setChatData] = useState({
         name: "",
         urgent: "",
-        service: "",
+        symptoms: [],
         emirates: "",
         phone: "",
         pageUrl: typeof window !== "undefined" ? window.location.href : "",
@@ -75,11 +75,9 @@ export default function Chatbot() {
             hasInitialized.current = true;
             setMessages([
                 { type: "bot", content: "Hello! 👋 Welcome to City Doctor. I'm here to help you book medical services at your home, hotel, or office. How can I assist you today?", timestamp: new Date() },
+                { type: "bot", content: "May I know your name?", timestamp: new Date() },
             ]);
-            setTimeout(() => {
-                setMessages((prev) => [...prev, { type: "bot", content: "May I know your name?", timestamp: new Date() }]);
-                setNameQuestionAsked(true);
-            }, 2000 + Math.random() * 800);
+            setNameQuestionAsked(true);
         }
     }, [messages.length]);
 
@@ -124,44 +122,20 @@ export default function Chatbot() {
 
     useEffect(() => {
         if (chatContentRef.current) {
-            setTimeout(() => {
-                if (chatContentRef.current) chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
-            }, 100);
+            chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
         }
     }, [messages, currentStep]);
 
     useEffect(() => {
         if (currentStep === "phone-input" && phoneInputRef.current && chatContentRef.current) {
-            const timer = setTimeout(() => {
-                phoneInputRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-                chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
-            }, 1000);
-            return () => clearTimeout(timer);
+            phoneInputRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
         }
     }, [currentStep]);
 
-
-    const calculateTypingDelay = (content) => {
-        if (typeof content === "string") {
-            const baseDelay = Math.min(Math.max(content.length * 100, 1500), 4000);
-            return Math.round(baseDelay + (Math.random() * 1000 - 500));
-        }
-        return 2000 + Math.random() * 1000;
-    };
-
-    const addBotMessageWithTyping = (content, customDelay = null, onComplete = null) => {
-        const delay = customDelay !== null ? customDelay : calculateTypingDelay(content);
-        setMessages((prev) => [...prev, { type: "typing", content: "", timestamp: new Date() }]);
-        setTimeout(() => {
-            setMessages((prev) => prev.filter((msg) => msg.type !== "typing").concat({ type: "bot", content, timestamp: new Date() }));
-            onComplete && setTimeout(onComplete, 100);
-        }, delay);
-    };
-
-    const addAcknowledgment = (message, callback, delay = null) => {
-        const ackDelay = delay !== null ? delay : Math.max(calculateTypingDelay(message) * 0.6, 800);
-        addBotMessageWithTyping(message, ackDelay);
-        setTimeout(() => callback?.(), ackDelay + 500);
+    const addBotMessage = (content, onComplete = null) => {
+        setMessages((prev) => [...prev, { type: "bot", content, timestamp: new Date() }]);
+        onComplete?.();
     };
 
     const addUserMessage = (content) => {
@@ -177,48 +151,39 @@ export default function Chatbot() {
         setChatData((prev) => ({ ...prev, name: userName }));
         addUserMessage(userName);
         setNameInput("");
-        setTimeout(() => {
-            addAcknowledgment(`Nice to meet you, ${userName}! 😊`, () => {
-                setTimeout(() => {
-                    addBotMessageWithTyping("Do you need a doctor urgently?", null, () => setUrgentQuestionAsked(true));
-                }, 1000 + Math.random() * 500);
-            });
-        }, 600 + Math.random() * 400);
+        addBotMessage(`Nice to meet you, ${userName}! 😊`);
+        addBotMessage("Do you need a doctor urgently?", () => setUrgentQuestionAsked(true));
     };
 
     const handleUrgentSelect = (answer) => {
         setChatData((prev) => ({ ...prev, urgent: answer }));
         setUrgentSubmitted(true);
         addUserMessage(answer);
-        setTimeout(() => {
-            addAcknowledgment(`Got it.`, () => {
-                setTimeout(() => addBotMessageWithTyping("Which service do you need?", null, () => setServiceQuestionAsked(true)), 800);
-            });
-        }, 600 + Math.random() * 400);
+        addBotMessage("What symptoms are you experiencing?", () => setServiceQuestionAsked(true));
     };
 
-    const handleServiceSelect = (serviceTitle) => {
-        setChatData((prev) => ({ ...prev, service: serviceTitle }));
+    const handleSymptomToggle = (symptomTitle) => {
+        setChatData((prev) => {
+            const arr = prev.symptoms || [];
+            const has = arr.includes(symptomTitle);
+            const next = has ? arr.filter((s) => s !== symptomTitle) : [...arr, symptomTitle];
+            return { ...prev, symptoms: next };
+        });
+    };
+
+    const handleSymptomsDone = () => {
+        const selected = chatData.symptoms || [];
+        if (selected.length === 0) return;
         setServiceSubmitted(true);
-        addUserMessage(serviceTitle);
-        setTimeout(() => {
-            addAcknowledgment("Thank you!", () => {
-                setTimeout(() => addBotMessageWithTyping("Which emirate are you in?", null, () => setEmiratesQuestionAsked(true)), 800);
-            });
-        }, 600 + Math.random() * 400);
+        addUserMessage(selected.join(", "));
+        addBotMessage("Which emirate are you in?", () => setEmiratesQuestionAsked(true));
     };
 
     const handleEmiratesSelect = (emirate) => {
         setChatData((prev) => ({ ...prev, emirates: emirate }));
         setEmiratesSubmitted(true);
         addUserMessage(emirate);
-        setTimeout(() => {
-            addAcknowledgment("Perfect!", () => {
-                setTimeout(() => {
-                    addBotMessageWithTyping("📞 Please provide your phone number so our medical team can contact you.", null, () => setPhoneQuestionAsked(true));
-                }, 800);
-            });
-        }, 600 + Math.random() * 400);
+        addBotMessage("📞 Please provide your phone number so our medical team can contact you.", () => setPhoneQuestionAsked(true));
     };
 
     const handlePhoneSubmit = (e) => {
@@ -227,16 +192,17 @@ export default function Chatbot() {
         setPhoneSubmitted(true);
         addUserMessage(chatData.phone);
         setIsSubmitting(true);
+        addBotMessage("Perfect! Let me process this for you...");
 
-        setTimeout(() => {
-            addBotMessageWithTyping("Perfect! Let me process this for you...", 1500 + Math.random() * 500);
-        }, 600 + Math.random() * 400);
+        const symptomsText = (chatData.symptoms && chatData.symptoms.length > 0)
+            ? chatData.symptoms.join("\n")
+            : "-";
 
         const dataToSend = {
             name: chatData.name,
             phone: chatData.phone,
             emirates: chatData.emirates || "",
-            symptoms: chatData.service || "-",
+            symptoms: symptomsText,
             pageUrl: chatData.pageUrl,
         };
 
@@ -248,25 +214,22 @@ export default function Chatbot() {
                     localStorage.removeItem(CHATBOT_CLOSE_COUNT_KEY);
                     localStorage.removeItem(CHATBOT_LAST_CLOSE_TIME_KEY);
 
-                    setTimeout(() => {
-                        addBotMessageWithTyping(
-                            <div className="chatbot-success-message">
-                                <div className="success-icon">✅</div>
-                                <h3>Thank you for your inquiry!</h3>
-                                <p>Our medical team will contact you shortly to assist with booking your service.</p>
-                                <p className="est-response-time">Est. Response Time: 2 Min</p>
-                            </div>,
-                            2000,
-                            () => setTimeout(() => navigate("/thank-you"), 2500)
-                        );
-                    }, 1500 + Math.random() * 500);
+                addBotMessage(
+                    <div className="chatbot-success-message">
+                        <div className="success-icon">✅</div>
+                        <h3>Thank you for your inquiry!</h3>
+                        <p>Our medical team will contact you shortly to assist with booking your service.</p>
+                        <p className="est-response-time">Est. Response Time: 2 Min</p>
+                    </div>
+                );
+                setTimeout(() => navigate("/thank-you"), 1500);
                 } else {
-                    setTimeout(() => addBotMessageWithTyping("Something went wrong. Please try again or contact us directly."), 1200);
+                    addBotMessage("Something went wrong. Please try again or contact us directly.");
                 }
             })
             .catch((error) => {
                 console.error("Submission error:", error);
-                setTimeout(() => addBotMessageWithTyping("Something went wrong. Please try again or contact us directly."), 1200);
+                addBotMessage("Something went wrong. Please try again or contact us directly.");
             })
             .finally(() => setIsSubmitting(false));
     };
@@ -275,7 +238,7 @@ export default function Chatbot() {
         if (nameInput.trim().length >= 2) return true;
         if (chatData.name && !urgentSubmitted) return true;
         if (chatData.urgent && !serviceSubmitted) return true;
-        if (chatData.service && !emiratesSubmitted) return true;
+        if ((chatData.symptoms?.length || 0) > 0 && !emiratesSubmitted) return true;
         if (chatData.emirates && (chatData.phone?.length >= 10 || chatData.phone?.length > 0)) return true;
         return false;
     };
@@ -296,7 +259,7 @@ export default function Chatbot() {
     };
 
     const resetChat = () => {
-        setChatData({ name: "", urgent: "", service: "", emirates: "", phone: "", pageUrl: typeof window !== "undefined" ? window.location.href : "" });
+        setChatData({ name: "", urgent: "", symptoms: [], emirates: "", phone: "", pageUrl: typeof window !== "undefined" ? window.location.href : "" });
         setNameInput("");
         setNameQuestionAsked(false);
         setUrgentQuestionAsked(false);
@@ -314,11 +277,9 @@ export default function Chatbot() {
         hasInitialized.current = false;
         setMessages([
             { type: "bot", content: "Hello! 👋 Welcome to City Doctor. I'm here to help you book medical services at your home, hotel, or office. How can I assist you today?", timestamp: new Date() },
+            { type: "bot", content: "May I know your name?", timestamp: new Date() },
         ]);
-        setTimeout(() => {
-            setMessages((prev) => [...prev, { type: "bot", content: "May I know your name?", timestamp: new Date() }]);
-            setNameQuestionAsked(true);
-        }, 2000 + Math.random() * 800);
+        setNameQuestionAsked(true);
     };
 
     return (
@@ -412,11 +373,24 @@ export default function Chatbot() {
                                 <div className="message-bubble message-options-bubble">
                                     <div className="options-grid options-grid-services">
                                         {SERVICE_LIST.map((service) => (
-                                            <button key={service.id} type="button" className="option-btn" onClick={() => handleServiceSelect(service.title)}>
+                                            <button
+                                                key={service.id}
+                                                type="button"
+                                                className={`option-btn ${(chatData.symptoms || []).includes(service.title) ? "option-btn-selected" : ""}`}
+                                                onClick={() => handleSymptomToggle(service.title)}
+                                            >
                                                 {service.title}
                                             </button>
                                         ))}
                                     </div>
+                                    <button
+                                        type="button"
+                                        className="chatbot-submit-btn symptoms-done-btn"
+                                        onClick={handleSymptomsDone}
+                                        disabled={(chatData.symptoms || []).length === 0}
+                                    >
+                                        Done
+                                    </button>
                                 </div>
                             </div>
                         )}

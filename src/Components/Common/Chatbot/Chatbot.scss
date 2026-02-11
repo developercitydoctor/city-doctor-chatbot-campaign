@@ -406,7 +406,8 @@
             cursor: not-allowed;
         }
 
-        &.option-btn-primary {
+        &.option-btn-primary,
+        &.option-btn-selected {
             background: #50E6AF;
             color: #006FAC;
             border-color: #50E6AF;
@@ -417,6 +418,34 @@
                 color: white;
                 box-shadow: 0 4px 10px rgba(81, 228, 176, 0.4);
             }
+        }
+    }
+
+    .symptoms-done-btn {
+        margin-top: 12px;
+        width: 100%;
+        padding: 10px 20px;
+        background: #50E6AF;
+        color: #006FAC;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 2px 8px rgba(80, 230, 175, 0.3);
+        font-family: inherit;
+
+        &:hover:not(:disabled) {
+            background: #036DAB;
+            color: white;
+            box-shadow: 0 4px 12px rgba(81, 228, 176, 0.4);
+            transform: translateY(-1px);
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
     }
 }
