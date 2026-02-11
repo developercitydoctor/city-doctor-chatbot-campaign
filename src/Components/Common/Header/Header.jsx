@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import "./Header.scss"
 import logoWhite from "../../../assets/Logo/City-Doctor-Logo.avif"
 import { useLocation } from 'react-router-dom'
-import chatbotIcon from "../../../assets/Common/chatbot-icon-white.png";
+import { BsChatRightTextFill } from "react-icons/bs";
 import { useChatbot } from '../../../Context/ChatbotContext'
 
 export default function Header(){
@@ -41,7 +41,7 @@ export default function Header(){
                 {location.pathname !== "/thank-you" && (
                     <div className="call-div-right">
                         <button type="button" className="whatsapp-button" onClick={openChatbot} aria-label="WhatsApp">
-                            <img src={chatbotIcon} alt="Chat" className="whatsapp-icon-btn" />
+                            <BsChatRightTextFill className="chatbot-icon-btn" aria-hidden="true" />
                             <span className="whatsapp-number">WhatsApp</span>
                         </button>
                     </div>

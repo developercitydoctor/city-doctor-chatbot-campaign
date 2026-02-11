@@ -8,10 +8,11 @@ const CAMPAIGN_NAME = "ChatBot Campaign";
 
 /**
  * Sends chatbot lead data to Google Sheets
- * Sheet columns: Lead ID | Date & Time | Name | Phone Number | Symptoms | Campaign Name | Lead Status | Conversion Sent | gclid | fbclid | Remarks
+ * Sheet columns: Lead ID | Date & Time | Name | Phone Number | Emirates | Symptoms | Campaign Name | Lead Status | Conversion Sent | gclid | fbclid | Remarks
  * @param {Object} chatData - Chatbot data object
  * @param {string} chatData.name - User's name
  * @param {string} chatData.phone - User's phone number
+ * @param {string} chatData.emirates - Emirates (Dubai, Abu Dhabi, Sharjah)
  * @param {string} chatData.symptoms - Symptoms or health concern
  * @param {string} chatData.pageUrl - Page URL (optional)
  * @returns {Promise<Object>} - Returns { success: boolean, error? }
@@ -29,6 +30,7 @@ export const sendChatbotToGoogleSheets = async (chatData) => {
         leadId,
         name: chatData.name || "",
         phone: chatData.phone || "",
+        emirates: chatData.emirates || "",
         symptoms: chatData.symptoms || "",
         campaignName: CAMPAIGN_NAME,
         leadStatus: "New",

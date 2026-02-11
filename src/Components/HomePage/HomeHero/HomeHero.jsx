@@ -2,13 +2,12 @@ import "./HomeHero.scss";
 import bannerImage from "../../../assets/Banners/Landing-Page-Banner.png";
 import mobileBannerImage from "../../../assets/Banners/mobile-banner.jpg";
 import { IoMdStar } from "react-icons/io";
-import { FaWhatsapp } from "react-icons/fa";
 import icon11 from "../../../assets/Icons/icon-11.png";
 import icon12 from "../../../assets/Icons/icon-12.png";
 import icon13 from "../../../assets/Icons/icon-13.png";
 import useIsMobile from "../../../Utils/useIsMobile";
 import { useChatbot } from "../../../Context/ChatbotContext";
-import chatbotIcon from "../../../assets/Common/chatbot-icon-white.png";
+import { BsChatRightTextFill } from "react-icons/bs";
 
 
 export default function HomeHero() {
@@ -50,7 +49,7 @@ export default function HomeHero() {
 
           <div className="hero-buttons">
             <button type="button" className="btn primary-btn" onClick={openChatbot}>
-              <img src={chatbotIcon} alt="Book Instantly Via WhatsApp" className="btn-icon" />
+              <BsChatRightTextFill className="chatbot-icon-btn" aria-hidden="true" />
               Book Instantly Via WhatsApp
             </button>
           </div>

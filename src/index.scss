@@ -138,6 +138,12 @@ $bg-dark: #036DAB;
   .btn-icon {
     font-size: 20px;
   }
+
+  .chatbot-icon-btn {
+    font-size: 20px;
+    flex-shrink: 0;
+    color: inherit;
+  }
 }
 
 // WhatsApp button - green background

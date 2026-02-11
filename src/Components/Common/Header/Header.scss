@@ -71,7 +71,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 10px;
             padding: 0 16px;
             border-radius: 34px;
             border: none;
@@ -83,11 +83,11 @@
             //     background: $secondary;
             // }
 
-            .whatsapp-icon-btn {
-                width: 35px;
-                height: 35px;
-                object-fit: contain;
+            .chatbot-icon-btn {
+                font-size: 22px;
                 flex-shrink: 0;
+                color: white;
+                margin-bottom: -5px;
             }
 
             .whatsapp-number {
@@ -108,11 +108,9 @@
                 height: 45px;
                 border-radius: 28px;
                 padding: 0 12px;
-                gap: 4px;
 
-                .whatsapp-icon-btn {
-                    width: 18px;
-                    height: 18px;
+                .chatbot-icon-btn {
+                    font-size: 16px;
                 }
 
                 .whatsapp-number {
@@ -130,11 +128,9 @@
                 height: 40px;
                 border-radius: 25px;
                 padding: 0 10px;
-                gap: 3px;
 
-                .whatsapp-icon-btn {
-                    width: 16px;
-                    height: 16px;
+                .chatbot-icon-btn {
+                    font-size: 14px;
                 }
 
                 .whatsapp-number {
@@ -222,9 +218,8 @@
                     font-size: 16px;
                 }
 
-                .whatsapp-icon-btn {
-                    width: 25px;
-                    height: 25px;
+                .chatbot-icon-btn {
+                    font-size: 20px;
                 }
             }
         }
@@ -256,9 +251,8 @@
                     font-size: 16px;
                 }
 
-                .whatsapp-icon-btn {
-                    width: 25px;
-                    height: 25px;
+                .chatbot-icon-btn {
+                    font-size: 20px;
                 }
             }
         }

@@ -23,10 +23,10 @@
     }
 
     .chatbot-icon {
-        width: 40px;
-        height: 40px;
-        object-fit: contain;
+        font-size: 28px;
         color: white;
+        flex-shrink: 0;
+        margin-bottom: -5px;
     }
 }
 
@@ -371,9 +371,14 @@
         gap: 8px;
     }
 
+    .options-grid-services {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .options-row {
         display: flex;
         gap: 8px;
+        flex-wrap: wrap;
     }
 
     .option-btn {
@@ -467,6 +472,13 @@
         margin: 0 0 8px 0;
     }
 
+    .est-response-time {
+        font-size: 14px;
+        font-weight: 600;
+        color: #50E6AF;
+        margin: 12px 0 0 0;
+    }
+
     p {
         font-size: 14px;
         color: #667781;
@@ -514,8 +526,7 @@
         height: 56px;
 
         .chatbot-icon {
-            width: 40px;
-            height: 40px;
+            font-size: 26px;
         }
     }
 
