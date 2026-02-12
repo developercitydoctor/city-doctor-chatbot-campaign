@@ -11,7 +11,7 @@ import { useBookingModal } from './Context/BookingModalContext';
 import { initAttributionCapture } from './Utils/attribution';
 import { initRecaptchaOnLanding } from './Utils/recaptcha';
 
-// New Changes - Icon file name changed
+// New Changes - ChatBot Change
 
 export default function App() {
   const location = useLocation();
