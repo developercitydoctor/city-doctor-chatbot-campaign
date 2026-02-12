@@ -51,7 +51,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 20px;
+  gap: 10px;
   text-align: left;
   padding: 0 100px 80px 100px;
   max-width: 600px;
@@ -74,8 +74,71 @@
   text-align: left;
 }
 
+/* Glass-style container for redirect + countdown */
+.thankyou-hero .thankyou-redirect-glass {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.thankyou-hero .thankyou-redirect-glass .thankyou-redirect-text {
+  margin: 0 0 6px 0;
+}
+
+.thankyou-hero .thankyou-redirect-glass .thankyou-countdown {
+  margin: 0;
+}
+
+.thankyou-hero .thankyou-redirect-glass .thankyou-whatsapp-link {
+  display: inline-block;
+  margin-top: 12px;
+}
+
+.thankyou-hero .thankyou-redirect-text {
+  font-size: 16px;
+  color: #0D4E62;
+  margin: 8px 0 0 0;
+  font-weight: 500;
+}
+
+.thankyou-hero .thankyou-countdown {
+  font-size: 18px;
+  color: #0D4E62;
+  margin: 4px 0 0 0;
+  font-weight: 600;
+}
+
+.thankyou-hero .thankyou-countdown-number {
+  display: inline-block;
+  min-width: 1.2em;
+  text-align: center;
+  color: #25D366;
+}
+
+.thankyou-hero .thankyou-whatsapp-link {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 10px 20px;
+  background: #25D366;
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.thankyou-hero .thankyou-whatsapp-link:hover {
+  background: #20bd5a;
+  color: white;
+}
+
 .thankyou-hero .thankyou-content-button {
-  margin-top: 10px;
+  margin-top: 16px;
 }
 
 .thankyou-hero .thankyou-hero-content a {
@@ -98,9 +161,15 @@
   }
 
   .thankyou-hero .thankyou-content-title,
-  .thankyou-hero .thankyou-content-description {
+  .thankyou-hero .thankyou-content-description,
+  .thankyou-hero .thankyou-redirect-text,
+  .thankyou-hero .thankyou-countdown {
     color: white;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .thankyou-hero .thankyou-countdown-number {
+    color: #fff;
   }
 }
 
@@ -143,6 +212,17 @@
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   }
 
+  .thankyou-hero .thankyou-redirect-text,
+  .thankyou-hero .thankyou-countdown {
+    color: white;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  .thankyou-hero .thankyou-countdown-number {
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  }
+
   .thankyou-hero .thankyou-hero-content a {
     margin-left: auto;
     margin-right: auto;
@@ -160,7 +240,7 @@
   }
 
   .thankyou-hero .thankyou-content-title {
-    font-size: 28px;
+    font-size: 30px;
   }
 
   .thankyou-hero .thankyou-content-description {

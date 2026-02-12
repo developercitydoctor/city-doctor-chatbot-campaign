@@ -13,7 +13,7 @@ import { FaWhatsapp } from "react-icons/fa";
 const EMIRATES_OPTIONS = ["Dubai", "Abu Dhabi", "Sharjah"];
 
 
-// Auto-open intervals in milliseconds
+// Auto-open disabled: chatbot opens only on icon/WhatsApp button click
 const AUTO_OPEN_INTERVALS = [10000, 30000, 60000, 120000, 300000, 600000, 900000, 1800000];
 const CHATBOT_CLOSE_COUNT_KEY = 'chatbotCloseCount';
 const CHATBOT_LAST_CLOSE_TIME_KEY = 'chatbotLastCloseTime';
@@ -58,9 +58,9 @@ export default function Chatbot() {
     const phoneInputRef = useRef(null);
     const hasInitialized = useRef(false);
 
-    // Step flow: name → urgent → service → emirates → phone → complete
+    // Step flow: urgent → service → emirates → phone → complete (name step commented out)
     const getCurrentStep = () => {
-        if (!chatData.name) return "name-input";
+        // if (!chatData.name) return "name-input";
         if (!urgentSubmitted) return "urgent-input";
         if (!serviceSubmitted) return "service-input";
         if (!emiratesSubmitted) return "emirates-input";
@@ -71,56 +71,56 @@ export default function Chatbot() {
 
     const currentStep = getCurrentStep();
 
-    // Initialize messages on mount
+    // Initialize messages on mount (name question commented out – flow starts with urgent)
     useEffect(() => {
         if (messages.length === 0 && !hasInitialized.current) {
             hasInitialized.current = true;
             setMessages([
                 { type: "bot", content: "Hello! 👋 Welcome to City Doctor. I'm here to help you book medical services at your home, hotel, or office. How can I assist you today?", timestamp: new Date() },
-                { type: "bot", content: "May I know your name?", timestamp: new Date() },
+                // { type: "bot", content: "May I know your name?", timestamp: new Date() },
+                { type: "bot", content: "Do you need a doctor urgently?", timestamp: new Date() },
             ]);
-            setNameQuestionAsked(true);
+            // setNameQuestionAsked(true);
+            setUrgentQuestionAsked(true);
         }
     }, [messages.length]);
 
-    // Auto-open chatbot after 5 seconds (first visit only)
-    useEffect(() => {
-        const hasOpenedBefore = localStorage.getItem("chatbot-auto-opened");
-        if (!hasOpenedBefore && !hasAutoOpened) {
-            const timer = setTimeout(() => {
-                setIsOpen(true);
-                setHasAutoOpened(true);
-                localStorage.setItem("chatbot-auto-opened", "true");
-            }, 5000);
-            return () => clearTimeout(timer);
-        }
-    }, [hasAutoOpened, setIsOpen]);
+    // Auto-open disabled: open only when chatbot icon or WhatsApp button is clicked
+    // useEffect(() => {
+    //     const hasOpenedBefore = localStorage.getItem("chatbot-auto-opened");
+    //     if (!hasOpenedBefore && !hasAutoOpened) {
+    //         const timer = setTimeout(() => {
+    //             setIsOpen(true);
+    //             setHasAutoOpened(true);
+    //             localStorage.setItem("chatbot-auto-opened", "true");
+    //         }, 5000);
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [hasAutoOpened, setIsOpen]);
 
-    // Auto-open at intervals if not submitted
-    useEffect(() => {
-        if (isFormSubmitted || isOpen) return;
-        const storedCloseCount = parseInt(localStorage.getItem(CHATBOT_CLOSE_COUNT_KEY) || '0');
-        const lastCloseTime = localStorage.getItem(CHATBOT_LAST_CLOSE_TIME_KEY);
-        setCloseCount(storedCloseCount);
-
-        let timer;
-        if (lastCloseTime) {
-            const timeSinceLastClose = Date.now() - parseInt(lastCloseTime);
-            const intervalIndex = Math.min(storedCloseCount - 1, AUTO_OPEN_INTERVALS.length - 1);
-            const currentInterval = AUTO_OPEN_INTERVALS[intervalIndex];
-            if (timeSinceLastClose >= currentInterval) {
-                setIsOpen(true);
-            } else {
-                const remainingTime = currentInterval - timeSinceLastClose;
-                timer = setTimeout(() => setIsOpen(true), remainingTime);
-            }
-        } else if (storedCloseCount > 0) {
-            const intervalIndex = Math.min(storedCloseCount - 1, AUTO_OPEN_INTERVALS.length - 1);
-            const interval = AUTO_OPEN_INTERVALS[intervalIndex];
-            timer = setTimeout(() => setIsOpen(true), interval);
-        }
-        return () => timer && clearTimeout(timer);
-    }, [isOpen, isFormSubmitted, setIsOpen]);
+    // useEffect(() => {
+    //     if (isFormSubmitted || isOpen) return;
+    //     const storedCloseCount = parseInt(localStorage.getItem(CHATBOT_CLOSE_COUNT_KEY) || '0');
+    //     const lastCloseTime = localStorage.getItem(CHATBOT_LAST_CLOSE_TIME_KEY);
+    //     setCloseCount(storedCloseCount);
+    //     let timer;
+    //     if (lastCloseTime) {
+    //         const timeSinceLastClose = Date.now() - parseInt(lastCloseTime);
+    //         const intervalIndex = Math.min(storedCloseCount - 1, AUTO_OPEN_INTERVALS.length - 1);
+    //         const currentInterval = AUTO_OPEN_INTERVALS[intervalIndex];
+    //         if (timeSinceLastClose >= currentInterval) {
+    //             setIsOpen(true);
+    //         } else {
+    //             const remainingTime = currentInterval - timeSinceLastClose;
+    //             timer = setTimeout(() => setIsOpen(true), remainingTime);
+    //         }
+    //     } else if (storedCloseCount > 0) {
+    //         const intervalIndex = Math.min(storedCloseCount - 1, AUTO_OPEN_INTERVALS.length - 1);
+    //         const interval = AUTO_OPEN_INTERVALS[intervalIndex];
+    //         timer = setTimeout(() => setIsOpen(true), interval);
+    //     }
+    //     return () => timer && clearTimeout(timer);
+    // }, [isOpen, isFormSubmitted, setIsOpen]);
 
     useEffect(() => {
         if (chatContentRef.current) {
@@ -160,22 +160,23 @@ export default function Chatbot() {
 
     const handlePhoneChange = useCallback((phone) => setChatData((prev) => ({ ...prev, phone })), []);
 
-    const handleNameSubmit = (e) => {
-        e.preventDefault();
-        if (!nameInput.trim() || nameInput.trim().length < 2) return;
-        const userName = nameInput.trim();
-        setChatData((prev) => ({ ...prev, name: userName }));
-        addUserMessage(userName);
-        setNameInput("");
-        addBotMessage(`Nice to meet you, ${userName}! 😊`);
-        addBotMessage("Do you need a doctor urgently?", () => setUrgentQuestionAsked(true));
-    };
+    // Name field commented out – not asking for name
+    // const handleNameSubmit = (e) => {
+    //     e.preventDefault();
+    //     if (!nameInput.trim() || nameInput.trim().length < 2) return;
+    //     const userName = nameInput.trim();
+    //     setChatData((prev) => ({ ...prev, name: userName }));
+    //     addUserMessage(userName);
+    //     setNameInput("");
+    //     addBotMessage(`Nice to meet you, ${userName}! 😊`);
+    //     addBotMessage("Do you need a doctor urgently?", () => setUrgentQuestionAsked(true));
+    // };
 
     const handleUrgentSelect = (answer) => {
         setChatData((prev) => ({ ...prev, urgent: answer }));
         setUrgentSubmitted(true);
         addUserMessage(answer);
-        addBotMessage("What symptoms are you experiencing?", () => setServiceQuestionAsked(true));
+        addBotMessage("What symptoms are you experiencing? (Select multiple options)", () => setServiceQuestionAsked(true));
     };
 
     const handleSymptomToggle = (symptomTitle) => {
@@ -238,7 +239,16 @@ export default function Chatbot() {
                         <p className="est-response-time">Est. Response Time: {ESTIMATED_RESPONSE_TIME_SEC} sec</p>
                     </div>
                 );
-                setTimeout(() => navigate("/thank-you"), 1500);
+                // Conversion event for GTM / analytics (event_name: chatbot_form_conversion)
+                if (typeof window !== "undefined" && window.dataLayer) {
+                    window.dataLayer.push({
+                        event: "chatbot_form_conversion",
+                        eventCategory: "Chatbot",
+                        eventAction: "form_submitted",
+                        eventLabel: "Thank you page redirect",
+                    });
+                }
+                setTimeout(() => navigate("/thank-you", { state: { fromChatbot: true, symptoms: chatData.symptoms || [] } }), 1500);
                 } else {
                     addBotMessage("Something went wrong. Please try again or contact us directly.");
                 }
@@ -251,8 +261,8 @@ export default function Chatbot() {
     };
 
     const hasUnsavedInput = () => {
-        if (nameInput.trim().length >= 2) return true;
-        if (chatData.name && !urgentSubmitted) return true;
+        // if (nameInput.trim().length >= 2) return true;
+        // if (chatData.name && !urgentSubmitted) return true;
         if (chatData.urgent && !serviceSubmitted) return true;
         if ((chatData.symptoms?.length || 0) > 0 && !emiratesSubmitted) return true;
         if (chatData.emirates && (chatData.phone?.length >= 10 || chatData.phone?.length > 0)) return true;
@@ -276,8 +286,8 @@ export default function Chatbot() {
 
     const resetChat = () => {
         setChatData({ name: "", urgent: "", symptoms: [], emirates: "", phone: "", pageUrl: typeof window !== "undefined" ? window.location.href : "" });
-        setNameInput("");
-        setNameQuestionAsked(false);
+        // setNameInput("");
+        // setNameQuestionAsked(false);
         setUrgentQuestionAsked(false);
         setUrgentSubmitted(false);
         setServiceQuestionAsked(false);
@@ -293,9 +303,11 @@ export default function Chatbot() {
         hasInitialized.current = false;
         setMessages([
             { type: "bot", content: "Hello! 👋 Welcome to City Doctor. I'm here to help you book medical services at your home, hotel, or office. How can I assist you today?", timestamp: new Date() },
-            { type: "bot", content: "May I know your name?", timestamp: new Date() },
+            // { type: "bot", content: "May I know your name?", timestamp: new Date() },
+            { type: "bot", content: "Do you need a doctor urgently?", timestamp: new Date() },
         ]);
-        setNameQuestionAsked(true);
+        // setNameQuestionAsked(true);
+        setUrgentQuestionAsked(true);
     };
 
     return (
@@ -366,7 +378,8 @@ export default function Chatbot() {
                             )
                         ))}
 
-                        {currentStep === "name-input" && nameQuestionAsked && (
+                        {/* Name field commented out – not asking for name */}
+                        {/* {currentStep === "name-input" && nameQuestionAsked && (
                             <div className="chatbot-message chatbot-message-bot">
                                 <div className="message-bubble message-input-bubble">
                                     <form onSubmit={handleNameSubmit}>
@@ -382,7 +395,7 @@ export default function Chatbot() {
                                     </form>
                                 </div>
                             </div>
-                        )}
+                        )} */}
 
                         {currentStep === "urgent-input" && urgentQuestionAsked && (
                             <div className="chatbot-message chatbot-message-bot">
