@@ -377,7 +377,6 @@ export default function Chatbot() {
                                             onChange={(e) => setNameInput(e.target.value)}
                                             placeholder="Enter your name"
                                             className="chatbot-input"
-                                            autoFocus
                                         />
                                         <button type="submit" disabled={!nameInput.trim() || nameInput.trim().length < 2} className="chatbot-submit-btn">Send</button>
                                     </form>
@@ -446,8 +445,8 @@ export default function Chatbot() {
                                                 country={"ae"}
                                                 value={chatData.phone}
                                                 onChange={handlePhoneChange}
-                                                inputProps={{ name: "phone", required: true, autoFocus: true }}
-                                                inputStyle={{ width: "100%", height: "40px", borderRadius: "8px", border: "1px solid rgba(0, 0, 0, 0.2)", backgroundColor: "white", color: "#111b21", paddingLeft: "50px", fontSize: "14px" }}
+                                                inputProps={{ name: "phone", required: true }}
+                                                inputStyle={{ width: "100%", height: "40px", borderRadius: "8px", border: "1px solid rgba(0, 0, 0, 0.2)", backgroundColor: "white", color: "#111b21", paddingLeft: "50px", fontSize: "16px" }}
                                                 buttonStyle={{ border: "none", backgroundColor: "transparent", borderRight: "1px solid rgba(0, 0, 0, 0.2)" }}
                                                 containerStyle={{ width: "100%" }}
                                             />
