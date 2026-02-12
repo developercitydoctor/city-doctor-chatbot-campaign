@@ -116,8 +116,8 @@
 
       .btn-icon,
       .chatbot-icon-btn {
-        font-size: 20px;
-        margin-bottom: -5px;
+        font-size: 30px;
+        // margin-bottom: -5px;
       }
     }
   }
@@ -365,7 +365,8 @@
         font-size: 22px;
         font-weight: 500;
 
-        .btn-icon {
+        .btn-icon,
+        .chatbot-icon-btn {
           font-size: 30px;
         }
       }
@@ -424,7 +425,8 @@
         font-size: 18px;
         font-weight: 500;
 
-        .btn-icon {
+        .btn-icon,
+        .chatbot-icon-btn {
           font-size: 25px;
         }
       }

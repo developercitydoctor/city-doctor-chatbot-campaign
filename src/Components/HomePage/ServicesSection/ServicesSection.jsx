@@ -12,7 +12,7 @@ import service8 from "../../../assets/Services/image-8.webp";
 import service9 from "../../../assets/Services/image-9.webp";
 import service10 from "../../../assets/Services/image-10.webp";
 
-import { BsChatRightTextFill } from "react-icons/bs";
+// import { FaWhatsapp } from "react-icons/fa";
 
 const services = [
   {
@@ -105,8 +105,8 @@ const ServicesSection = () => {
         </div>
 
         <div className="whatsapp-booking-wrapper">
-          <button type="button" className="btn primary-btn" onClick={openChatbot}>
-            <BsChatRightTextFill className="chatbot-icon-btn" aria-hidden="true" />
+          <button type="button" className="btn whatsapp-btn" onClick={openChatbot}>
+            <FaWhatsapp className="chatbot-icon-btn" aria-hidden="true" />
             Book Instantly Via WhatsApp
           </button>
         </div>

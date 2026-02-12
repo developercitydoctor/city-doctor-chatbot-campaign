@@ -143,14 +143,15 @@
         }
       }
 
-      .btn.primary-btn {
+      .btn.primary-btn,
+      .btn.whatsapp-btn {
         font-size: 20px;
         font-weight: 500;
 
         .btn-icon,
         .chatbot-icon-btn {
-          font-size: 20px;
-          margin-bottom: -5px;
+          font-size: 30px;
+          // margin-bottom: -5px;
         }
       }
     }
@@ -408,7 +409,8 @@
         .btn.whatsapp-btn {
           font-size: 20px;
 
-          .btn-icon {
+          .btn-icon,
+          .chatbot-icon-btn {
             font-size: 25px;
           }
         }
@@ -416,7 +418,8 @@
         .btn.primary-btn {
           font-size: 20px;
 
-          .btn-icon {
+          .btn-icon,
+          .chatbot-icon-btn {
             font-size: 25px;
           }
         }

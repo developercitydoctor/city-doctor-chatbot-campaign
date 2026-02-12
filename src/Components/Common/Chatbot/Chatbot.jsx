@@ -5,9 +5,10 @@ import "react-phone-input-2/lib/style.css";
 import { sendChatbotToGoogleSheets } from "../../../Utils/emailService";
 import { useChatbot } from "../../../Context/ChatbotContext";
 import { services as SERVICE_LIST } from "../../../Constants/services";
+import { ESTIMATED_RESPONSE_TIME_SEC } from "../../../Constants/chatbot";
 import "./Chatbot.scss";
 import chatbotAvatar from "../../../assets/Common/chatbot-icon.jpg";
-import { BsChatRightTextFill } from "react-icons/bs";
+import { FaWhatsapp } from "react-icons/fa";
 
 const EMIRATES_OPTIONS = ["Dubai", "Abu Dhabi", "Sharjah"];
 
@@ -41,6 +42,7 @@ export default function Chatbot() {
         return 0;
     });
     const [isFullScreen, setIsFullScreen] = useState(false);
+    const [showHint, setShowHint] = useState(false);
 
     const [chatData, setChatData] = useState({
         name: "",
@@ -133,6 +135,20 @@ export default function Chatbot() {
         }
     }, [currentStep]);
 
+    // Show hint every 10 seconds when chat is closed (before form submitted)
+    useEffect(() => {
+        if (isOpen || isFormSubmitted) return;
+        let hideTimer = null;
+        const interval = setInterval(() => {
+            setShowHint(true);
+            hideTimer = setTimeout(() => setShowHint(false), 3000);
+        }, 10000);
+        return () => {
+            clearInterval(interval);
+            if (hideTimer) clearTimeout(hideTimer);
+        };
+    }, [isOpen, isFormSubmitted]);
+
     const addBotMessage = (content, onComplete = null) => {
         setMessages((prev) => [...prev, { type: "bot", content, timestamp: new Date() }]);
         onComplete?.();
@@ -183,7 +199,7 @@ export default function Chatbot() {
         setChatData((prev) => ({ ...prev, emirates: emirate }));
         setEmiratesSubmitted(true);
         addUserMessage(emirate);
-        addBotMessage("📞 Please provide your phone number so our medical team can contact you.", () => setPhoneQuestionAsked(true));
+        addBotMessage("📞 Please provide your WhatsApp number so our medical team can contact you.", () => setPhoneQuestionAsked(true));
     };
 
     const handlePhoneSubmit = (e) => {
@@ -219,7 +235,7 @@ export default function Chatbot() {
                         <div className="success-icon">✅</div>
                         <h3>Thank you for your inquiry!</h3>
                         <p>Our medical team will contact you shortly to assist with booking your service.</p>
-                        <p className="est-response-time">Est. Response Time: 2 Min</p>
+                        <p className="est-response-time">Est. Response Time: {ESTIMATED_RESPONSE_TIME_SEC} sec</p>
                     </div>
                 );
                 setTimeout(() => navigate("/thank-you"), 1500);
@@ -285,9 +301,18 @@ export default function Chatbot() {
     return (
         <>
             {!isOpen && (
-                <button onClick={openChatbot} className="chatbot-toggle-btn" aria-label="Open chat">
-                    <BsChatRightTextFill className="chatbot-icon" aria-hidden="true" />
-                </button>
+                <>
+                    <div className={`chatbot-hint ${showHint ? "show" : ""}`}>
+                        <div className="chatbot-hint-online">
+                            <span className="chatbot-hint-dot" aria-hidden="true" />
+                            Our Medical Consultants are Online…
+                        </div>
+                        <div className="chatbot-hint-time">Est. Response Time: {ESTIMATED_RESPONSE_TIME_SEC} sec</div>
+                    </div>
+                    <button onClick={openChatbot} className="chatbot-toggle-btn" aria-label="Open chat">
+                        <FaWhatsapp className="chatbot-icon" aria-hidden="true" />
+                    </button>
+                </>
             )}
 
             {isOpen && (
@@ -299,7 +324,10 @@ export default function Chatbot() {
                             </div>
                             <div className="chatbot-header-text">
                                 <h3>City Doctor</h3>
-                                <p>Available 24/7</p>
+                                <p className="chatbot-available-row">
+                                    <span className="chatbot-header-online-dot" aria-label="Online" />
+                                    Available 24/7
+                                </p>
                             </div>
                         </div>
                         <div className="chatbot-header-actions">

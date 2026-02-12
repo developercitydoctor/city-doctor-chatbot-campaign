@@ -8,7 +8,7 @@ import icon3 from "../../../assets/Icons/icon-3.png";
 import icon4 from "../../../assets/Icons/icon-4.png";
 import icon5 from "../../../assets/Icons/icon-5.png";
 
-import { BsChatRightTextFill } from "react-icons/bs";
+// import { FaWhatsapp } from "react-icons/fa";
 
 const features = [
   {
@@ -68,8 +68,8 @@ const WhyChooseUsSection = () => {
               ))}
             </div>
             <div className="whatsapp-booking-wrapper">
-              <button type="button" className="btn primary-btn" onClick={openChatbot}>
-                <BsChatRightTextFill className="chatbot-icon-btn" aria-hidden="true" />
+              <button type="button" className="btn whatsapp-btn" onClick={openChatbot}>
+                <FaWhatsapp className="chatbot-icon-btn" aria-hidden="true" />
                 Book Instantly Via WhatsApp
               </button>
             </div>

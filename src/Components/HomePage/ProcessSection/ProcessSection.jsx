@@ -5,7 +5,7 @@ import step1Image from "../../../assets/Icons/icon-6.png";
 import step2Image from "../../../assets/Icons/icon-7.png";
 import step3Image from "../../../assets/Icons/icon-8.png";
 
-import { BsChatRightTextFill } from "react-icons/bs";
+// import { FaWhatsapp } from "react-icons/fa";
 
 const steps = [
   {
@@ -59,8 +59,8 @@ const ProcessSection = () => {
         </div>
 
         <div className="whatsapp-booking-wrapper">
-          <button type="button" className="btn primary-btn" onClick={openChatbot}>
-            <BsChatRightTextFill className="chatbot-icon-btn" aria-hidden="true" />
+          <button type="button" className="btn whatsapp-btn" onClick={openChatbot}>
+            <FaWhatsapp className="chatbot-icon-btn" aria-hidden="true" />
             Book Instantly Via WhatsApp
           </button>
         </div>

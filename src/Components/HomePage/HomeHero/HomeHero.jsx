@@ -7,7 +7,7 @@ import icon12 from "../../../assets/Icons/icon-12.png";
 import icon13 from "../../../assets/Icons/icon-13.png";
 import useIsMobile from "../../../Utils/useIsMobile";
 import { useChatbot } from "../../../Context/ChatbotContext";
-import { BsChatRightTextFill } from "react-icons/bs";
+import { FaWhatsapp } from "react-icons/fa";
 
 
 export default function HomeHero() {
@@ -48,8 +48,8 @@ export default function HomeHero() {
           </div>
 
           <div className="hero-buttons">
-            <button type="button" className="btn primary-btn" onClick={openChatbot}>
-              <BsChatRightTextFill className="chatbot-icon-btn" aria-hidden="true" />
+            <button type="button" className="btn whatsapp-btn" onClick={openChatbot}>
+              <FaWhatsapp className="chatbot-icon-btn" aria-hidden="true" />
               Book Instantly Via WhatsApp
             </button>
           </div>
