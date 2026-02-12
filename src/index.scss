@@ -350,7 +350,7 @@ $bg-dark: #036DAB;
   }
 }
 
-// reCAPTCHA v3 badge: keep on top of fixed headers, footers, modals
+// reCAPTCHA v3 badge: below chatbot so it doesn’t cover the chat (chatbot-container is 9999)
 .grecaptcha-badge {
-  z-index: 9999 !important;
+  z-index: 9990 !important;
 }

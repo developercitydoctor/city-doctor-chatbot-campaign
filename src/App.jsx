@@ -15,7 +15,7 @@ import { initRecaptchaOnLanding } from './Utils/recaptcha';
 
 export default function App() {
   const location = useLocation();
-  const [ pageLoading, setPageLoading ] = useState(true);
+  const [ pageLoading, setPageLoading ] = useState(false);
   const { isOpen, closeModal } = useBookingModal();
 
   // Initialize attribution capture and reCAPTCHA v3 (once on landing)
@@ -29,7 +29,7 @@ export default function App() {
 
     const timeout = setTimeout(() => {
       setPageLoading(false);
-    }, 1500); // Adjust loader duration
+    }, 600); // Short loader – only long enough to avoid flash, then show content
 
     return () => clearTimeout(timeout);
   }, [location.pathname]);

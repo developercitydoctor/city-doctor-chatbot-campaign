@@ -18,9 +18,10 @@ function buildWhatsAppLink(symptoms) {
     return `${WHATSAPP_URL}?text=${encodeURIComponent(message)}`;
 }
 
-function openWhatsAppInNewTab(whatsappLink) {
+// Auto-redirect: same-tab works reliably (window.open from timer is blocked by popup blockers)
+function redirectToWhatsApp(whatsappLink) {
     if (typeof window !== "undefined" && whatsappLink) {
-        window.open(whatsappLink, "_blank", "noopener,noreferrer");
+        window.location.href = whatsappLink;
     }
 }
 
@@ -63,13 +64,11 @@ export default function Thankyou() {
         }
     }, [refreshedSymptoms]);
 
-    // After 5 sec countdown, open WhatsApp in new tab (same logic as reference: window.open with _blank)
+    // After 5 sec countdown, redirect to WhatsApp (same-tab so it is not blocked by popup blockers)
     useEffect(() => {
         if (!showRedirectCountdown) return;
         if (countdown <= 0) {
-            openWhatsAppInNewTab(whatsappLink);
-            sessionStorage.removeItem(THANKYOU_FROM_CHATBOT_KEY);
-            sessionStorage.removeItem(THANKYOU_SYMPTOMS_KEY);
+            redirectToWhatsApp(whatsappLink);
             return;
         }
         const timer = setInterval(() => setCountdown((c) => c - 1), 1000);
