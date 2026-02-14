@@ -42,7 +42,7 @@ export default function Thankyou() {
 
     const symptoms = fromChatbotFirstLoad ? (location.state?.symptoms || []) : (refreshedSymptoms || []);
     const whatsappLink = buildWhatsAppLink(symptoms);
-    const [countdown, setCountdown] = useState(5);
+    const [countdown, setCountdown] = useState(1);
     const showRedirectCountdown = fromChatbotFirstLoad;
     const showOnlyWhatsAppButton = !fromChatbotFirstLoad && refreshedSymptoms !== null;
 
