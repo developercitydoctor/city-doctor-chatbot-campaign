@@ -18,13 +18,6 @@ function buildWhatsAppLink(symptoms) {
     return `${WHATSAPP_URL}?text=${encodeURIComponent(message)}`;
 }
 
-// Auto-redirect: same-tab works reliably (window.open from timer is blocked by popup blockers)
-function redirectToWhatsApp(whatsappLink) {
-    if (typeof window !== "undefined" && whatsappLink) {
-        window.location.href = whatsappLink;
-    }
-}
-
 export default function Thankyou() {
     const isMobile = useIsMobile(768);
     const location = useLocation();
@@ -64,11 +57,13 @@ export default function Thankyou() {
         }
     }, [refreshedSymptoms]);
 
-    // After 5 sec countdown, redirect to WhatsApp (same-tab so it is not blocked by popup blockers)
+    // Countdown then same-tab redirect to WhatsApp (no new tab)
     useEffect(() => {
         if (!showRedirectCountdown) return;
         if (countdown <= 0) {
-            redirectToWhatsApp(whatsappLink);
+            if (typeof window !== "undefined" && whatsappLink) {
+                window.location.href = whatsappLink;
+            }
             return;
         }
         const timer = setInterval(() => setCountdown((c) => c - 1), 1000);
@@ -91,18 +86,24 @@ export default function Thankyou() {
                     <p className="thankyou-content-description">We'll get back to you soon.</p>
                     {showRedirectCountdown && (
                         <div className="thankyou-redirect-glass">
-                            <p className="thankyou-redirect-text">You are being redirected to City Doctor WhatsApp...</p>
-                            <p className="thankyou-countdown">Redirecting in <span className="thankyou-countdown-number">{countdown}</span> sec</p>
-                            {countdown <= 0 && (
-                                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="thankyou-whatsapp-link">
-                                    Open WhatsApp
-                                </a>
+                            {countdown > 0 ? (
+                                <>
+                                    <p className="thankyou-redirect-text">You are being redirected to City Doctor WhatsApp...</p>
+                                    <p className="thankyou-countdown">Redirecting in <span className="thankyou-countdown-number">{countdown}</span> sec</p>
+                                </>
+                            ) : (
+                                <>
+                                    <p className="thankyou-redirect-text">Redirecting to WhatsApp...</p>
+                                    <a href={whatsappLink} className="thankyou-whatsapp-link">
+                                        Open WhatsApp
+                                    </a>
+                                </>
                             )}
                         </div>
                     )}
                     {showOnlyWhatsAppButton && (
                         <div className="thankyou-redirect-glass">
-                            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="thankyou-whatsapp-link">
+                            <a href={whatsappLink} className="thankyou-whatsapp-link">
                                 Open WhatsApp
                             </a>
                         </div>
